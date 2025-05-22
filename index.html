@@ -1,13 +1,340 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
+<meta charset="utf-8">
+<title>安樂死輪盤</title>
+<style>
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
 
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.attribute {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.opinions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.opinion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.opinion-group label {
+    font-weight: bold;
+}
+
+.opinion-group textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.opinion-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.opinion-controls button {
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.add-opinion {
+    background-color: #28a745;
+    color: white;
+}
+
+.remove-opinion {
+    background-color: #dc3545;
+    color: white;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+button#submit-opinions {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+}
+
+button#pull-trigger {
+    background-color: #dc3545;
+    color: white;
+    font-size: 1.2em;
+    padding: 15px 20px;
+}
+
+#results {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+#success-reasons {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.hidden {
+    display: none;
+}
+</style>
 </head>
-
 <body>
+    <h1>安樂死輪盤</h1>
 
+    <div class="group">
+        <h2>將死之人</h2>
+        <div id="deceased-attribute" class="attribute"></div>
+    </div>
+
+    <div class="group">
+        <h2>旁觀者意見</h2>
+        <div class="opinions">
+            <div>
+                <h3>支持安樂死</h3>
+                <div id="support-opinions-container">
+                    <div class="opinion-group">
+                        <label for="support-opinion-0">理由 1:</label>
+                        <textarea id="support-opinion-0" placeholder="請輸入您的理由"></textarea>
+                    </div>
+                </div>
+                <button type="button" id="add-support-opinion" class="add-opinion">新增理由</button>
+            </div>
+            <div>
+                <h3>反對安樂死</h3>
+                <div id="oppose-opinions-container">
+                    <div class="opinion-group">
+                        <label for="oppose-opinion-0">理由 1:</label>
+                        <textarea id="oppose-opinion-0" placeholder="請輸入您的理由"></textarea>
+                    </div>
+                </div>
+                <button type="button" id="add-oppose-opinion" class="add-opinion">新增理由</button>
+            </div>
+        </div>
+        <button id="submit-opinions">提交意見</button>
+    </div>
+
+    <div id="decision-phase" class="group hidden">
+        <h2>安樂死執行</h2>
+        <p>現在由將死之人決定是否執行安樂死...</p>
+        <button id="pull-trigger">扣下扳機</button>
+        <div id="results"></div>
+        <div id="success-reasons"></div>
+    </div>
+
+    <script>
+        const deceasedAttributeElement = document.getElementById('deceased-attribute');
+        const supportOpinionsContainer = document.getElementById('support-opinions-container');
+        const opposeOpinionsContainer = document.getElementById('oppose-opinions-container');
+        const addSupportOpinionButton = document.getElementById('add-support-opinion');
+        const addOpposeOpinionButton = document.getElementById('add-oppose-opinion');
+        const submitOpinionsButton = document.getElementById('submit-opinions');
+        const decisionPhaseDiv = document.getElementById('decision-phase');
+        const pullTriggerButton = document.getElementById('pull-trigger');
+        const resultsDiv = document.getElementById('results');
+        const successReasonsDiv = document.getElementById('success-reasons');
+
+        const attributes = [
+            "癌末，生命僅剩數月，飽受病痛折磨。",
+            "妻離子散，孑然一身，對人生感到絕望。",
+            "負債千億，生活困頓，看不到未來。",
+            "重度漸凍症，失去自理能力，生活品質極差。",
+            "經歷重大意外，全身癱瘓，意識清醒但無法行動。",
+            "晚年孤獨，身心俱疲，渴望平靜的結束。",
+            "（正向屬性）功成名就，已享受完美人生，希望有尊嚴地離開。",
+            "（正向屬性）看淡生死，認為是時候迎接下一個階段。"
+        ];
+
+        let currentAttribute = "";
+        let supportBullets = [];
+        let opposeBullets = [];
+        let supportReasons = [];
+        let opposeReasons = [];
+        let supportOpinionCounter = 1;
+        let opposeOpinionCounter = 1;
+
+        function createOpinionInput(container, type, counter) {
+            const opinionDiv = document.createElement('div');
+            opinionDiv.classList.add('opinion-group');
+            const label = document.createElement('label');
+            label.setAttribute('for', `${type}-opinion-${counter - 1}`);
+            label.textContent = `理由 ${counter}:`;
+            const textarea = document.createElement('textarea');
+            textarea.id = `${type}-opinion-${counter - 1}`;
+            textarea.placeholder = "請輸入您的理由";
+            const controlsDiv = document.createElement('div');
+            controlsDiv.classList.add('opinion-controls');
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.classList.add('remove-opinion');
+            removeButton.textContent = '移除';
+            removeButton.addEventListener('click', () => {
+                if (container.children.length > 1) {
+                    opinionDiv.remove();
+                    relabelInputs(container, type);
+                    if (type === 'support') {
+                        supportOpinionCounter--;
+                    } else {
+                        opposeOpinionCounter--;
+                    }
+                } else {
+                    alert('至少需要一個理由輸入框。');
+                }
+            });
+            controlsDiv.appendChild(removeButton);
+            opinionDiv.appendChild(label);
+            opinionDiv.appendChild(textarea);
+            opinionDiv.appendChild(controlsDiv);
+            container.appendChild(opinionDiv);
+        }
+
+        function relabelInputs(container, type) {
+            Array.from(container.children).forEach((opinionDiv, index) => {
+                const label = opinionDiv.querySelector('label');
+                const textarea = opinionDiv.querySelector('textarea');
+                label.setAttribute('for', `${type}-opinion-${index}`);
+                label.textContent = `理由 ${index + 1}:`;
+                textarea.id = `${type}-opinion-${index}`;
+            });
+        }
+
+        function initializeGame() {
+            const randomIndex = Math.floor(Math.random() * attributes.length);
+            currentAttribute = attributes[randomIndex];
+            deceasedAttributeElement.textContent = `屬性：${currentAttribute}`;
+
+            // Reset opinion containers
+            supportOpinionsContainer.innerHTML = `
+                <div class="opinion-group">
+                    <label for="support-opinion-0">理由 1:</label>
+                    <textarea id="support-opinion-0" placeholder="請輸入您的理由"></textarea>
+                </div>
+            `;
+            opposeOpinionsContainer.innerHTML = `
+                <div class="opinion-group">
+                    <label for="oppose-opinion-0">理由 1:</label>
+                    <textarea id="oppose-opinion-0" placeholder="請輸入您的理由"></textarea>
+                </div>
+            `;
+            supportOpinionCounter = 1;
+            opposeOpinionCounter = 1;
+            successReasonsDiv.textContent = "";
+            decisionPhaseDiv.classList.add('hidden');
+            resultsDiv.textContent = "";
+            submitOpinionsButton.disabled = false;
+            pullTriggerButton.disabled = false;
+        }
+
+        addSupportOpinionButton.addEventListener('click', () => {
+            createOpinionInput(supportOpinionsContainer, 'support', ++supportOpinionCounter);
+        });
+
+        addOpposeOpinionButton.addEventListener('click', () => {
+            createOpinionInput(opposeOpinionsContainer, 'oppose', ++opposeOpinionCounter);
+        });
+
+        submitOpinionsButton.addEventListener('click', () => {
+            supportReasons = Array.from(supportOpinionsContainer.querySelectorAll('textarea'))
+                .map(textarea => textarea.value.trim())
+                .filter(value => value !== "");
+            opposeReasons = Array.from(opposeOpinionsContainer.querySelectorAll('textarea'))
+                .map(textarea => textarea.value.trim())
+                .filter(value => value !== "");
+
+            supportBullets = [...Array(supportReasons.length).fill("麻醉子彈")];
+            opposeBullets = [...Array(opposeReasons.length).fill("空包彈")];
+
+            alert("意見已提交，現在進入安樂死執行階段。");
+            decisionPhaseDiv.classList.remove('hidden');
+            submitOpinionsButton.disabled = true;
+        });
+
+        pullTriggerButton.addEventListener('click', () => {
+            const allBullets = [...supportBullets, ...opposeBullets];
+            const allReasons = { support: supportReasons, oppose: opposeReasons };
+            successReasonsDiv.textContent = ""; // Clear previous reasons
+
+            if (Math.random() < 0.2) {
+                resultsDiv.textContent = "將死之人手持沙漠之鷹！";
+                setTimeout(() => {
+                    resultsDiv.textContent += " ... 一槍斃命，安樂死成功。";
+                    successReasonsDiv.textContent = "理由：(沙漠之鷹)";
+                    setTimeout(initializeGame, 3000);
+                }, 2000);
+                pullTriggerButton.disabled = true;
+                return;
+            }
+
+            if (allBullets.length === 0) {
+                resultsDiv.textContent = "沒有任何子彈 (沒有人提供意見)... 將死之人繼續受苦。";
+                pullTriggerButton.disabled = true;
+                setTimeout(initializeGame, 3000);
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * allBullets.length);
+            const shotResult = allBullets[randomIndex];
+
+            if (shotResult === "麻醉子彈") {
+                resultsDiv.textContent = "射出的是塗有麻藥的子彈... 安樂死成功。";
+                if (supportReasons.length > 0) {
+                    successReasonsDiv.textContent = "支持理由：";
+                    supportReasons.forEach((reason, index) => {
+                        successReasonsDiv.textContent += (index > 0 ? " + " : "") + reason;
+                    });
+                } else {
+                    successReasonsDiv.textContent = "沒有提供支持安樂死的具體理由。";
+                }
+            } else {
+                resultsDiv.textContent = `射出的是${shotResult}... 安樂死失敗，將繼續受苦。`;
+            }
+
+            pullTriggerButton.disabled = true;
+            //setTimeout(initializeGame, 3000);
+        });
+
+        // Initial game setup
+        initializeGame();
+    </script>
 </body>
-
 </html>
