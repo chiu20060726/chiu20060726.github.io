@@ -23,7 +23,7 @@ if (container) {
 
   // Dynamic Starry Sky
   const starGeometry = new THREE.BufferGeometry();
-  const starCount = 3000; // Massive amount of stars
+  const starCount = 67676; // Massive amount of stars
   const starPositions = new Float32Array(starCount * 3);
   const starColors = new Float32Array(starCount * 3);
   const starSizes = new Float32Array(starCount);
@@ -33,10 +33,16 @@ if (container) {
   const color3 = new THREE.Color(0xffffff); // White
 
   for (let i = 0; i < starCount; i += 1) {
-    // Spread stars widely across the view
-    starPositions[i * 3] = (Math.random() - 0.5) * 100;
-    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 100;
-    starPositions[i * 3 + 2] = 5 - Math.random() * 80; // Spread from front to back
+    // Spherical distribution so stars are visible from every angle
+    const radius = 20 + Math.random() * 130;
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+
+    starPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    starPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    starPositions[i * 3 + 2] = radius * Math.cos(phi);
 
     // Mix colors for stars (mostly white/purple, some teal)
     let mixedColor;
@@ -48,7 +54,7 @@ if (container) {
     } else {
       mixedColor = color3;
     }
-    
+
     starColors[i * 3] = mixedColor.r;
     starColors[i * 3 + 1] = mixedColor.g;
     starColors[i * 3 + 2] = mixedColor.b;
@@ -71,7 +77,7 @@ if (container) {
     blending: THREE.AdditiveBlending, // Makes stars glow when they overlap
     depthWrite: false
   });
-  
+
   const stars = new THREE.Points(starGeometry, starsMaterial);
   scene.add(stars);
 
@@ -80,7 +86,7 @@ if (container) {
   let mouseY = 0;
   let targetX = 0;
   let targetY = 0;
-  
+
   const windowHalfX = window.innerWidth / 2;
   const windowHalfY = window.innerHeight / 2;
 
@@ -101,7 +107,7 @@ if (container) {
 
   const animate = () => {
     const elapsed = clock.getElapsedTime();
-    
+
     // Smooth mouse target tracking
     targetX += (mouseX - targetX) * 0.05;
     targetY += (mouseY - targetY) * 0.05;
