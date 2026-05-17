@@ -1,340 +1,410 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>安樂死輪盤</title>
-<style>
-body {
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    background-color: #f4f4f4;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chiu20060726 | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6ff;
+      --bg-accent: #edf0ff;
+      --card: #ffffff;
+      --text: #1f2340;
+      --muted: #55607a;
+      --accent: #6c5ce7;
+      --accent-dark: #4b3bc7;
+      --accent-soft: #ede9ff;
+      --highlight: #00b894;
+      --shadow: 0 24px 50px rgba(33, 39, 96, 0.12);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+    }
 
-.group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
+    * {
+      box-sizing: border-box;
+    }
 
-.attribute {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+    body {
+      margin: 0;
+      font-family: "Noto Sans", "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 55%, #e8ebff 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-.opinions {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 15px;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-.opinion-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #eee;
-    padding: 10px;
-    border-radius: 3px;
-}
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+      display: grid;
+      gap: 32px;
+    }
 
-.opinion-group label {
-    font-weight: bold;
-}
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
-.opinion-group textarea {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
+    .logo {
+      font-family: "Poppins", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+    }
 
-.opinion-controls {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
-}
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
 
-.opinion-controls button {
-    padding: 5px 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 3px;
-    font-size: 0.9em;
-}
+    .nav-links a {
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
 
-.add-opinion {
-    background-color: #28a745;
-    color: white;
-}
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+    }
 
-.remove-opinion {
-    background-color: #dc3545;
-    color: white;
-}
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      align-items: center;
+    }
 
-h3 {
-    margin-top: 0;
-}
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f2f3ff 100%);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 20px;
+    }
 
-button#submit-opinions {
-    padding: 10px 15px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    background-color: #007bff;
-    color: white;
-}
+    .hero-card h1 {
+      font-size: clamp(2rem, 2.5vw, 2.8rem);
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+    }
 
-button#pull-trigger {
-    background-color: #dc3545;
-    color: white;
-    font-size: 1.2em;
-    padding: 15px 20px;
-}
+    .hero-card p {
+      margin: 0;
+      color: var(--muted);
+    }
 
-#results {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-top: 20px;
-}
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-#success-reasons {
-    margin-top: 10px;
-    font-style: italic;
-}
+    .pill {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
 
-.hidden {
-    display: none;
-}
-</style>
+    .profile-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 18px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, var(--accent) 0%, #b3a1ff 100%);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: "Poppins", sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 20px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      font-size: 1.4rem;
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .experience-list {
+      display: grid;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .experience-item {
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      background: var(--bg-accent);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .experience-item span {
+      font-weight: 600;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-card {
+      background: #f8f9ff;
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      border: 1px solid #e3e7ff;
+    }
+
+    .skill-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--accent-dark);
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: #fff;
+      border: 1px solid #e0e4ff;
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .club-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .club-card {
+      background: var(--bg-accent);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .club-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--accent-dark);
+    }
+
+    .club-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .highlight {
+      color: var(--highlight);
+      font-weight: 600;
+    }
+
+    @media (max-width: 720px) {
+      .hero-card,
+      .profile-card,
+      .section {
+        padding: 22px;
+      }
+
+      .avatar {
+        width: 96px;
+        height: 96px;
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>安樂死輪盤</h1>
+  <div class="page">
+    <nav class="top-nav">
+      <div class="logo">Chiu20060726</div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#clubs">Clubs</a>
+      </div>
+    </nav>
 
-    <div class="group">
-        <h2>將死之人</h2>
-        <div id="deceased-attribute" class="attribute"></div>
-    </div>
-
-    <div class="group">
-        <h2>旁觀者意見</h2>
-        <div class="opinions">
-            <div>
-                <h3>支持安樂死</h3>
-                <div id="support-opinions-container">
-                    <div class="opinion-group">
-                        <label for="support-opinion-0">理由 1:</label>
-                        <textarea id="support-opinion-0" placeholder="請輸入您的理由"></textarea>
-                    </div>
-                </div>
-                <button type="button" id="add-support-opinion" class="add-opinion">新增理由</button>
-            </div>
-            <div>
-                <h3>反對安樂死</h3>
-                <div id="oppose-opinions-container">
-                    <div class="opinion-group">
-                        <label for="oppose-opinion-0">理由 1:</label>
-                        <textarea id="oppose-opinion-0" placeholder="請輸入您的理由"></textarea>
-                    </div>
-                </div>
-                <button type="button" id="add-oppose-opinion" class="add-opinion">新增理由</button>
-            </div>
+    <section class="hero">
+      <div class="hero-card">
+        <p class="pill">CSIE • National Chi Nan University</p>
+        <h1>About Me</h1>
+        <p>A student currently studying CSIE at National Chi Nan University, with a passion for building full-stack experiences and infrastructure systems.</p>
+        <div class="hero-meta">
+          <span class="pill">Full-Stack & Web3</span>
+          <span class="pill">Networking & Cloud</span>
+          <span class="pill">Hardware & Firmware</span>
         </div>
-        <button id="submit-opinions">提交意見</button>
-    </div>
+      </div>
+      <div class="profile-card">
+        <div class="avatar">CH</div>
+        <div>
+          <h2 style="margin: 0; font-family: 'Poppins', sans-serif;">Chiu20060726</h2>
+          <p style="margin: 6px 0 0; color: var(--muted);">High school diploma from Taipei Municipal Zhong-zheng Senior High School.</p>
+        </div>
+        <div>
+          <p style="margin: 0; color: var(--muted);">Currently exploring <span class="highlight">cloud computing</span>, <span class="highlight">wireless communication</span>, and system-level problem solving.</p>
+        </div>
+      </div>
+    </section>
 
-    <div id="decision-phase" class="group hidden">
-        <h2>安樂死執行</h2>
-        <p>現在由將死之人決定是否執行安樂死...</p>
-        <button id="pull-trigger">扣下扳機</button>
-        <div id="results"></div>
-        <div id="success-reasons"></div>
-    </div>
+    <section id="about" class="section">
+      <h2>Snapshot</h2>
+      <p>Driven by curiosity in computer science and engineering, I enjoy merging software with real-world systems. From backend services to routers and firmware, I love turning complex infrastructure into reliable experiences.</p>
+    </section>
 
-    <script>
-        const deceasedAttributeElement = document.getElementById('deceased-attribute');
-        const supportOpinionsContainer = document.getElementById('support-opinions-container');
-        const opposeOpinionsContainer = document.getElementById('oppose-opinions-container');
-        const addSupportOpinionButton = document.getElementById('add-support-opinion');
-        const addOpposeOpinionButton = document.getElementById('add-oppose-opinion');
-        const submitOpinionsButton = document.getElementById('submit-opinions');
-        const decisionPhaseDiv = document.getElementById('decision-phase');
-        const pullTriggerButton = document.getElementById('pull-trigger');
-        const resultsDiv = document.getElementById('results');
-        const successReasonsDiv = document.getElementById('success-reasons');
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <ul class="experience-list">
+        <li class="experience-item"><span>President</span> of 24th Student Association of CSIE, NCNU</li>
+        <li class="experience-item"><span>Group Leader</span> at NCNU ACM Student Chapter</li>
+        <li class="experience-item"><span>Mayor's Award</span> for Graduation Students (112th Academic Year, Taipei City)</li>
+        <li class="experience-item"><span>Speaker</span> at SITCON 2024</li>
+        <li class="experience-item"><span>3rd Prize</span> in 2024 TISF Computer Science (No. 190020)</li>
+        <li class="experience-item"><span>Vice-President</span> of Information Club, ZZSH</li>
+      </ul>
+    </section>
 
-        const attributes = [
-            "癌末，生命僅剩數月，飽受病痛折磨。",
-            "妻離子散，孑然一身，對人生感到絕望。",
-            "負債千億，生活困頓，看不到未來。",
-            "重度漸凍症，失去自理能力，生活品質極差。",
-            "經歷重大意外，全身癱瘓，意識清醒但無法行動。",
-            "晚年孤獨，身心俱疲，渴望平靜的結束。",
-            "（正向屬性）功成名就，已享受完美人生，希望有尊嚴地離開。",
-            "（正向屬性）看淡生死，認為是時候迎接下一個階段。"
-        ];
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Coding</h3>
+          <div class="skill-list">
+            <span class="chip">C/C++</span>
+            <span class="chip">PHP</span>
+            <span class="chip">Python</span>
+            <span class="chip">JavaScript</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Web</h3>
+          <div class="skill-list">
+            <span class="chip">Full-Stack</span>
+            <span class="chip">Back-end</span>
+            <span class="chip">Web3 / Blockchain</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Internet</h3>
+          <div class="skill-list">
+            <span class="chip">Router / Switch (Juniper)</span>
+            <span class="chip">Firewall Config</span>
+            <span class="chip">DNS / DHCP</span>
+            <span class="chip">Server Ops (Unix/Windows)</span>
+            <span class="chip">Cloud (GCP/AWS/OCI)</span>
+            <span class="chip">Git</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Wireless</h3>
+          <div class="skill-list">
+            <span class="chip">WiFi</span>
+            <span class="chip">BLE</span>
+            <span class="chip">LoRa</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Hardware / Firmware</h3>
+          <div class="skill-list">
+            <span class="chip">PCB Design</span>
+            <span class="chip">Circuit Design</span>
+            <span class="chip">HDL (Verilog)</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        let currentAttribute = "";
-        let supportBullets = [];
-        let opposeBullets = [];
-        let supportReasons = [];
-        let opposeReasons = [];
-        let supportOpinionCounter = 1;
-        let opposeOpinionCounter = 1;
+    <section id="clubs" class="section">
+      <h2>School Clubs</h2>
+      <div class="club-grid">
+        <div class="club-card">
+          <h3>University</h3>
+          <ul>
+            <li>NCNU ACM Student Chapter</li>
+            <li>Student Association of CSIE, NCNU</li>
+            <li>Photography Club</li>
+            <li>ACGN Club</li>
+            <li>GDSC NCNU</li>
+          </ul>
+        </div>
+        <div class="club-card">
+          <h3>High School</h3>
+          <ul>
+            <li>Information Club</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-        function createOpinionInput(container, type, counter) {
-            const opinionDiv = document.createElement('div');
-            opinionDiv.classList.add('opinion-group');
-            const label = document.createElement('label');
-            label.setAttribute('for', `${type}-opinion-${counter - 1}`);
-            label.textContent = `理由 ${counter}:`;
-            const textarea = document.createElement('textarea');
-            textarea.id = `${type}-opinion-${counter - 1}`;
-            textarea.placeholder = "請輸入您的理由";
-            const controlsDiv = document.createElement('div');
-            controlsDiv.classList.add('opinion-controls');
-            const removeButton = document.createElement('button');
-            removeButton.type = 'button';
-            removeButton.classList.add('remove-opinion');
-            removeButton.textContent = '移除';
-            removeButton.addEventListener('click', () => {
-                if (container.children.length > 1) {
-                    opinionDiv.remove();
-                    relabelInputs(container, type);
-                    if (type === 'support') {
-                        supportOpinionCounter--;
-                    } else {
-                        opposeOpinionCounter--;
-                    }
-                } else {
-                    alert('至少需要一個理由輸入框。');
-                }
-            });
-            controlsDiv.appendChild(removeButton);
-            opinionDiv.appendChild(label);
-            opinionDiv.appendChild(textarea);
-            opinionDiv.appendChild(controlsDiv);
-            container.appendChild(opinionDiv);
-        }
-
-        function relabelInputs(container, type) {
-            Array.from(container.children).forEach((opinionDiv, index) => {
-                const label = opinionDiv.querySelector('label');
-                const textarea = opinionDiv.querySelector('textarea');
-                label.setAttribute('for', `${type}-opinion-${index}`);
-                label.textContent = `理由 ${index + 1}:`;
-                textarea.id = `${type}-opinion-${index}`;
-            });
-        }
-
-        function initializeGame() {
-            const randomIndex = Math.floor(Math.random() * attributes.length);
-            currentAttribute = attributes[randomIndex];
-            deceasedAttributeElement.textContent = `屬性：${currentAttribute}`;
-
-            // Reset opinion containers
-            supportOpinionsContainer.innerHTML = `
-                <div class="opinion-group">
-                    <label for="support-opinion-0">理由 1:</label>
-                    <textarea id="support-opinion-0" placeholder="請輸入您的理由"></textarea>
-                </div>
-            `;
-            opposeOpinionsContainer.innerHTML = `
-                <div class="opinion-group">
-                    <label for="oppose-opinion-0">理由 1:</label>
-                    <textarea id="oppose-opinion-0" placeholder="請輸入您的理由"></textarea>
-                </div>
-            `;
-            supportOpinionCounter = 1;
-            opposeOpinionCounter = 1;
-            successReasonsDiv.textContent = "";
-            decisionPhaseDiv.classList.add('hidden');
-            resultsDiv.textContent = "";
-            submitOpinionsButton.disabled = false;
-            pullTriggerButton.disabled = false;
-        }
-
-        addSupportOpinionButton.addEventListener('click', () => {
-            createOpinionInput(supportOpinionsContainer, 'support', ++supportOpinionCounter);
-        });
-
-        addOpposeOpinionButton.addEventListener('click', () => {
-            createOpinionInput(opposeOpinionsContainer, 'oppose', ++opposeOpinionCounter);
-        });
-
-        submitOpinionsButton.addEventListener('click', () => {
-            supportReasons = Array.from(supportOpinionsContainer.querySelectorAll('textarea'))
-                .map(textarea => textarea.value.trim())
-                .filter(value => value !== "");
-            opposeReasons = Array.from(opposeOpinionsContainer.querySelectorAll('textarea'))
-                .map(textarea => textarea.value.trim())
-                .filter(value => value !== "");
-
-            supportBullets = [...Array(supportReasons.length).fill("麻醉子彈")];
-            opposeBullets = [...Array(opposeReasons.length).fill("空包彈")];
-
-            alert("意見已提交，現在進入安樂死執行階段。");
-            decisionPhaseDiv.classList.remove('hidden');
-            submitOpinionsButton.disabled = true;
-        });
-
-        pullTriggerButton.addEventListener('click', () => {
-            const allBullets = [...supportBullets, ...opposeBullets];
-            const allReasons = { support: supportReasons, oppose: opposeReasons };
-            successReasonsDiv.textContent = ""; // Clear previous reasons
-
-            if (Math.random() < 0.2) {
-                resultsDiv.textContent = "將死之人手持沙漠之鷹！";
-                setTimeout(() => {
-                    resultsDiv.textContent += " ... 一槍斃命，安樂死成功。";
-                    successReasonsDiv.textContent = "理由：(沙漠之鷹)";
-                    setTimeout(initializeGame, 3000);
-                }, 2000);
-                pullTriggerButton.disabled = true;
-                return;
-            }
-
-            if (allBullets.length === 0) {
-                resultsDiv.textContent = "沒有任何子彈 (沒有人提供意見)... 將死之人繼續受苦。";
-                pullTriggerButton.disabled = true;
-                setTimeout(initializeGame, 3000);
-                return;
-            }
-
-            const randomIndex = Math.floor(Math.random() * allBullets.length);
-            const shotResult = allBullets[randomIndex];
-
-            if (shotResult === "麻醉子彈") {
-                resultsDiv.textContent = "射出的是塗有麻藥的子彈... 安樂死成功。";
-                if (supportReasons.length > 0) {
-                    successReasonsDiv.textContent = "支持理由：";
-                    supportReasons.forEach((reason, index) => {
-                        successReasonsDiv.textContent += (index > 0 ? " + " : "") + reason;
-                    });
-                } else {
-                    successReasonsDiv.textContent = "沒有提供支持安樂死的具體理由。";
-                }
-            } else {
-                resultsDiv.textContent = `射出的是${shotResult}... 安樂死失敗，將繼續受苦。`;
-            }
-
-            pullTriggerButton.disabled = true;
-            //setTimeout(initializeGame, 3000);
-        });
-
-        // Initial game setup
-        initializeGame();
-    </script>
+    <footer class="footer">Designed with a blend of minimalism and tech-inspired accents.</footer>
+  </div>
 </body>
 </html>
