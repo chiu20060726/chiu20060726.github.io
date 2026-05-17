@@ -4,80 +4,92 @@ const container = document.getElementById('three-root');
 
 if (container) {
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xdfe5ff, 12, 42);
+  // Dark mode fog to match the CSS --bg color
+  scene.fog = new THREE.FogExp2(0x09090b, 0.015);
 
   const camera = new THREE.PerspectiveCamera(
-    55,
+    60,
     window.innerWidth / window.innerHeight,
     0.1,
     100
   );
-  camera.position.set(0, 0, 14);
+  camera.position.set(0, 0, 10);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
+  renderer.setClearColor(0x000000, 0); // Transparent background
   container.appendChild(renderer.domElement);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.65);
-  scene.add(ambient);
-
-  const keyLight = new THREE.DirectionalLight(0xffffff, 0.65);
-  keyLight.position.set(6, 8, 4);
-  scene.add(keyLight);
-
-  const fillLight = new THREE.PointLight(0x8fa7ff, 0.55, 30);
-  fillLight.position.set(-6, -4, 6);
-  scene.add(fillLight);
-
-  const knotGeometry = new THREE.TorusKnotGeometry(3.2, 0.7, 140, 22);
-  const knotMaterial = new THREE.MeshStandardMaterial({
-    color: 0x6c5ce7,
-    metalness: 0.35,
-    roughness: 0.25,
-    emissive: 0x1f144a
-  });
-  const knot = new THREE.Mesh(knotGeometry, knotMaterial);
-  scene.add(knot);
-
-  const orbGroup = new THREE.Group();
-  const orbMaterial = new THREE.MeshStandardMaterial({
-    color: 0x7ed6ff,
-    roughness: 0.4,
-    metalness: 0.2,
-    emissive: 0x0b2d50
-  });
-
-  for (let i = 0; i < 12; i += 1) {
-    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.35, 24, 24), orbMaterial);
-    const radius = 6 + Math.random() * 4;
-    const angle = (i / 12) * Math.PI * 2;
-    orb.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 4, Math.sin(angle) * radius);
-    orbGroup.add(orb);
-  }
-  scene.add(orbGroup);
-
+  // Dynamic Starry Sky
   const starGeometry = new THREE.BufferGeometry();
-  const starCount = 220;
+  const starCount = 3000; // Massive amount of stars
   const starPositions = new Float32Array(starCount * 3);
+  const starColors = new Float32Array(starCount * 3);
+  const starSizes = new Float32Array(starCount);
+
+  const color1 = new THREE.Color(0xa78bfa); // Purple
+  const color2 = new THREE.Color(0x2dd4bf); // Teal
+  const color3 = new THREE.Color(0xffffff); // White
 
   for (let i = 0; i < starCount; i += 1) {
-    starPositions[i * 3] = (Math.random() - 0.5) * 40;
-    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 30;
-    starPositions[i * 3 + 2] = -10 - Math.random() * 30;
+    // Spread stars widely across the view
+    starPositions[i * 3] = (Math.random() - 0.5) * 100;
+    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+    starPositions[i * 3 + 2] = 5 - Math.random() * 80; // Spread from front to back
+
+    // Mix colors for stars (mostly white/purple, some teal)
+    let mixedColor;
+    const rand = Math.random();
+    if (rand > 0.8) {
+      mixedColor = color2;
+    } else if (rand > 0.5) {
+      mixedColor = color1.clone().lerp(color3, Math.random());
+    } else {
+      mixedColor = color3;
+    }
+    
+    starColors[i * 3] = mixedColor.r;
+    starColors[i * 3 + 1] = mixedColor.g;
+    starColors[i * 3 + 2] = mixedColor.b;
+
+    // Randomize star sizes slightly
+    starSizes[i] = Math.random() * 2.5 + 0.5;
   }
 
   starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+  starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+  starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
 
+  // Custom shader material for stars to use individual sizes and make them glowing dots
   const starsMaterial = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.08,
-    opacity: 0.6,
-    transparent: true
+    size: 0.12,
+    vertexColors: true,
+    opacity: 0.9,
+    transparent: true,
+    sizeAttenuation: true,
+    blending: THREE.AdditiveBlending, // Makes stars glow when they overlap
+    depthWrite: false
   });
+  
   const stars = new THREE.Points(starGeometry, starsMaterial);
   scene.add(stars);
+
+  // Mouse tracking for parallax
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  
+  const windowHalfX = window.innerWidth / 2;
+  const windowHalfY = window.innerHeight / 2;
+
+  const onDocumentMouseMove = (event) => {
+    mouseX = (event.clientX - windowHalfX) * 0.0015;
+    mouseY = (event.clientY - windowHalfY) * 0.0015;
+  };
+
+  document.addEventListener('mousemove', onDocumentMouseMove);
 
   const clock = new THREE.Clock();
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -89,10 +101,21 @@ if (container) {
 
   const animate = () => {
     const elapsed = clock.getElapsedTime();
-    knot.rotation.x = elapsed * 0.25;
-    knot.rotation.y = elapsed * 0.35;
-    orbGroup.rotation.y = elapsed * 0.15;
-    stars.rotation.y = elapsed * 0.03;
+    
+    // Smooth mouse target tracking
+    targetX += (mouseX - targetX) * 0.05;
+    targetY += (mouseY - targetY) * 0.05;
+
+    // Continuous slow rotation for the starry sky + mouse parallax
+    stars.rotation.y = elapsed * 0.03 + targetX;
+    stars.rotation.x = elapsed * 0.01 + targetY;
+    stars.rotation.z = elapsed * 0.005;
+
+    // Subtle camera drift based on mouse
+    camera.position.x += (mouseX * 3 - camera.position.x) * 0.02;
+    camera.position.y += (-mouseY * 3 - camera.position.y) * 0.02;
+    camera.lookAt(scene.position);
+
     renderScene();
     animationFrameId = requestAnimationFrame(animate);
   };
@@ -118,10 +141,8 @@ if (container) {
       cancelAnimationFrame(animationFrameId);
     }
     window.removeEventListener('resize', handleResize);
+    document.removeEventListener('mousemove', onDocumentMouseMove);
     renderer.dispose();
-    knotGeometry.dispose();
-    knotMaterial.dispose();
-    orbMaterial.dispose();
     starGeometry.dispose();
     starsMaterial.dispose();
     container.replaceChildren();
