@@ -70,19 +70,18 @@ if (container) {
 
   starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
 
-  const stars = new THREE.Points(
-    starGeometry,
-    new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.08,
-      opacity: 0.6,
-      transparent: true
-    })
-  );
+  const starsMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.08,
+    opacity: 0.6,
+    transparent: true
+  });
+  const stars = new THREE.Points(starGeometry, starsMaterial);
   scene.add(stars);
 
   const clock = new THREE.Clock();
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let animationFrameId;
 
   const renderScene = () => {
     renderer.render(scene, camera);
@@ -95,7 +94,7 @@ if (container) {
     orbGroup.rotation.y = elapsed * 0.15;
     stars.rotation.y = elapsed * 0.03;
     renderScene();
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
   };
 
   if (prefersReducedMotion.matches) {
@@ -113,4 +112,20 @@ if (container) {
   };
 
   window.addEventListener('resize', handleResize);
+
+  const cleanup = () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+    window.removeEventListener('resize', handleResize);
+    renderer.dispose();
+    knotGeometry.dispose();
+    knotMaterial.dispose();
+    orbMaterial.dispose();
+    starGeometry.dispose();
+    starsMaterial.dispose();
+    container.replaceChildren();
+  };
+
+  window.addEventListener('pagehide', cleanup);
 }
