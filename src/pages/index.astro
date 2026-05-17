@@ -1,6 +1,4 @@
 ---
-import threeScript from '../scripts/three-background.js?url';
-
 const title = 'Chiu20060726 | Portfolio';
 ---
 <!DOCTYPE html>
@@ -573,8 +571,8 @@ const title = 'Chiu20060726 | Portfolio';
       <footer class="footer reveal">Designed with a blend of minimalism and tech-inspired accents.</footer>
     </div>
     
-    <script type="module" src={threeScript}></script>
     <script>
+      import '../scripts/three-background.js';
       // Intersection Observer for scroll animations
       document.addEventListener('DOMContentLoaded', () => {
         const reveals = document.querySelectorAll('.reveal');
