@@ -1,17 +1,17 @@
 ---
-const title = 'Chiu20060726 | Portfolio';
+const title = 'Chiu20060726 | 個人檔案';
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Chiu20060726's portfolio — CSIE student at NCNU, specializing in full-stack development, cloud computing, and networking." />
+    <meta name="description" content="Chiu20060726 的個人作品集網站 — 資工系學生，專注於全端開發、雲端運算與網路系統。" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <style is:global>
@@ -39,7 +39,7 @@ const title = 'Chiu20060726 | Portfolio';
 
       body {
         margin: 0;
-        font-family: "Noto Sans", "Poppins", sans-serif;
+        font-family: "Noto Sans TC", "Noto Sans", "Poppins", sans-serif;
         background: var(--bg);
         color: var(--text);
         line-height: 1.6;
@@ -133,6 +133,14 @@ const title = 'Chiu20060726 | Portfolio';
         flex-wrap: wrap;
       }
 
+      .logo {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+      }
+
       .lang-switch {
         display: inline-flex;
         align-items: center;
@@ -160,14 +168,6 @@ const title = 'Chiu20060726 | Portfolio';
         width: 14px;
         height: 14px;
         fill: currentColor;
-      }
-
-      .logo {
-        font-family: "Poppins", sans-serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
       }
 
       .nav-links {
@@ -496,96 +496,92 @@ const title = 'Chiu20060726 | Portfolio';
       <nav class="top-nav reveal">
         <div class="nav-top-row">
           <div class="logo gradient-text">Ching Shun Chiu</div>
-          <a href="/zh/" class="lang-switch">
+          <a href="/" class="lang-switch">
             <svg viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
-            中文
+            EN
           </a>
         </div>
         <div class="nav-links">
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#skills">Skills</a>
-          <a href="#clubs">Clubs</a>
-          <a href="#contact">Contact</a>
+          <a href="#about">關於</a>
+          <a href="#experience">經歷</a>
+          <a href="#skills">技能</a>
+          <a href="#clubs">社團</a>
+          <a href="#contact">聯絡</a>
         </div>
       </nav>
 
       <section class="hero">
         <div class="card-base profile-card reveal">
-          <div class="avatar"><img src="https://gravatar.com/avatar/9a8443a770fef6f9d71469560274ff53?s=280" alt="Ching Shun Chiu" loading="eager" /></div>
-          <h2 class="gradient-text" style="margin: 0; font-family: 'Poppins', sans-serif; font-size: 2rem;">Ching Shun Chiu</h2>
+          <div class="avatar"><img src="https://gravatar.com/avatar/9a8443a770fef6f9d71469560274ff53?s=280" alt="邱靖舜" loading="eager" /></div>
+          <h2 class="gradient-text" style="margin: 0; font-family: 'Poppins', sans-serif; font-size: 2rem;">邱靖舜</h2>
           <p style="margin: 0; color: var(--muted);">
-            High school diploma from Taipei Municipal Zhong-zheng Senior High School.
+            畢業於臺北市立中正高級中學。
           </p>
           <p style="margin: 0; color: var(--muted); max-width: 500px;">
-            Currently exploring <span class="gradient-text" style="font-weight: 600;">cloud computing</span>,
-            <span class="gradient-text" style="font-weight: 600;">wireless communication</span>, and system-level problem
-            solving<span class="typewriter-cursor"></span>
+            目前正在探索<span class="gradient-text" style="font-weight: 600;">雲端運算</span>、<span class="gradient-text" style="font-weight: 600;">無線通訊</span>，以及系統層級的問題解決<span class="typewriter-cursor"></span>
           </p>
         </div>
 
         <div class="card-base hero-card reveal">
           <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <p class="pill">CSIE</p>
-            <p class="pill" style="border-color: rgba(45, 212, 191, 0.3); color: var(--highlight); background: rgba(45, 212, 191, 0.1);">National Chi Nan University</p>
+            <p class="pill">資訊工程學系</p>
+            <p class="pill" style="border-color: rgba(45, 212, 191, 0.3); color: var(--highlight); background: rgba(45, 212, 191, 0.1);">國立暨南國際大學</p>
           </div>
-          <h1>About Me</h1>
+          <h1>關於我</h1>
           <p>
-            A student currently studying CSIE at National Chi Nan University, with a passion for
-            building full-stack experiences and infrastructure systems.
+            目前就讀於國立暨南國際大學資訊工程學系，對全端開發與基礎設施系統有著濃厚的興趣。
           </p>
           <div class="hero-meta">
-            <span class="pill">Full-Stack &amp; Web3</span>
-            <span class="pill">Networking &amp; Cloud</span>
-            <span class="pill">Hardware &amp; Firmware</span>
+            <span class="pill">全端 &amp; Web3</span>
+            <span class="pill">網路 &amp; 雲端</span>
+            <span class="pill">硬體 &amp; 韌體</span>
           </div>
         </div>
       </section>
 
       <section id="about" class="card-base section reveal">
-        <h2 class="gradient-text">Snapshot</h2>
+        <h2 class="gradient-text">簡介</h2>
         <p>
-          Driven by curiosity in computer science and engineering, I enjoy merging software with
-          real-world systems. From backend services to routers and firmware, I love turning complex
-          infrastructure into reliable experiences.
+          出於對資訊科學與工程的好奇心驅動，我喜歡將軟體與真實世界系統結合。
+          從後端服務到路由器與韌體，我熱愛將複雜的基礎設施轉化為可靠的使用體驗。
         </p>
       </section>
 
       <section id="experience" class="card-base section reveal">
-        <h2 class="gradient-text">Experience</h2>
+        <h2 class="gradient-text">經歷</h2>
         <ul class="experience-list">
           <li class="experience-item">
-            <span>President</span> 
-            <div>24th Student Association of CSIE, NCNU</div>
+            <span>會長</span> 
+            <div>暨大資工系第 24 屆系學會</div>
           </li>
           <li class="experience-item">
-            <span>Group Leader</span> 
-            <div>NCNU ACM Student Chapter</div>
+            <span>組長</span> 
+            <div>暨大 ACM 學生分會</div>
           </li>
           <li class="experience-item">
-            <span>Mayor's Award</span> 
-            <div>Graduation Students (112th Academic Year, Taipei City)</div>
+            <span>市長獎</span> 
+            <div>112 學年度臺北市畢業生</div>
           </li>
           <li class="experience-item">
-            <span>Speaker</span> 
+            <span>講者</span> 
             <div>SITCON 2024</div>
           </li>
           <li class="experience-item">
-            <span>3rd Prize</span> 
-            <div>2024 TISF Computer Science (No. 190020)</div>
+            <span>佳作</span> 
+            <div>2024 TISF 電腦與資訊學科（No. 190020）</div>
           </li>
           <li class="experience-item">
-            <span>Vice-President</span> 
-            <div>Information Research Club, ZZSH</div>
+            <span>副社長</span> 
+            <div>中正高中 資訊研究社</div>
           </li>
         </ul>
       </section>
 
       <section id="skills" class="card-base section reveal">
-        <h2 class="gradient-text">Skills</h2>
+        <h2 class="gradient-text">技能</h2>
         <div class="skills-grid">
           <div class="skill-card">
-            <h3>Coding</h3>
+            <h3>程式語言</h3>
             <div class="skill-list">
               <span class="chip">C/C++</span>
               <span class="chip">PHP</span>
@@ -594,26 +590,26 @@ const title = 'Chiu20060726 | Portfolio';
             </div>
           </div>
           <div class="skill-card">
-            <h3>Web</h3>
+            <h3>網頁開發</h3>
             <div class="skill-list">
-              <span class="chip">Full-Stack</span>
-              <span class="chip">Back-end</span>
-              <span class="chip">Web3 / Blockchain</span>
+              <span class="chip">全端開發</span>
+              <span class="chip">後端</span>
+              <span class="chip">Web3 / 區塊鏈</span>
             </div>
           </div>
           <div class="skill-card">
-            <h3>Internet</h3>
+            <h3>網路</h3>
             <div class="skill-list">
-              <span class="chip">Router / Switch (Juniper)</span>
-              <span class="chip">Firewall Config</span>
+              <span class="chip">路由器 / 交換器 (Juniper)</span>
+              <span class="chip">防火牆設定</span>
               <span class="chip">DNS / DHCP</span>
-              <span class="chip">Server Ops (Unix/Windows)</span>
-              <span class="chip">Cloud (GCP/AWS/OCI)</span>
+              <span class="chip">伺服器管理 (Unix/Windows)</span>
+              <span class="chip">雲端 (GCP/AWS/OCI)</span>
               <span class="chip">Git</span>
             </div>
           </div>
           <div class="skill-card">
-            <h3>Wireless</h3>
+            <h3>無線通訊</h3>
             <div class="skill-list">
               <span class="chip">WiFi</span>
               <span class="chip">BLE</span>
@@ -621,10 +617,10 @@ const title = 'Chiu20060726 | Portfolio';
             </div>
           </div>
           <div class="skill-card">
-            <h3>Hardware / Firmware</h3>
+            <h3>硬體 / 韌體</h3>
             <div class="skill-list">
-              <span class="chip">PCB Design</span>
-              <span class="chip">Circuit Design</span>
+              <span class="chip">PCB 設計</span>
+              <span class="chip">電路設計</span>
               <span class="chip">HDL (Verilog)</span>
             </div>
           </div>
@@ -632,30 +628,30 @@ const title = 'Chiu20060726 | Portfolio';
       </section>
 
       <section id="clubs" class="card-base section reveal">
-        <h2 class="gradient-text">School Clubs</h2>
+        <h2 class="gradient-text">社團</h2>
         <div class="club-grid">
           <div class="club-card">
-            <h3>University</h3>
+            <h3>大學</h3>
             <ul>
-              <li>NCNU ACM Student Chapter</li>
-              <li>Student Association of CSIE, NCNU</li>
-              <li>Photography Club</li>
-              <li>ACGN Club</li>
+              <li>暨大 ACM 學生分會</li>
+              <li>暨大資工系學會</li>
+              <li>攝影社</li>
+              <li>動漫社</li>
               <li>GDSC NCNU</li>
             </ul>
           </div>
           <div class="club-card">
-            <h3>High School</h3>
+            <h3>高中</h3>
             <ul>
-              <li>Information Club</li>
+              <li>資訊社</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section id="contact" class="card-base section reveal">
-        <h2 class="gradient-text">Contact</h2>
-        <p>Feel free to reach out to me through any of the platforms below.</p>
+        <h2 class="gradient-text">聯絡方式</h2>
+        <p>歡迎透過以下平台與我聯繫。</p>
         <div class="contact-links">
           <a href="https://github.com/chiu20060726" target="_blank" class="contact-btn">
             <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -682,7 +678,7 @@ const title = 'Chiu20060726 | Portfolio';
     </div>
     
     <script>
-      import '../scripts/three-background.js';
+      import '../../scripts/three-background.js';
       // Intersection Observer for scroll animations
       document.addEventListener('DOMContentLoaded', () => {
         const reveals = document.querySelectorAll('.reveal');
