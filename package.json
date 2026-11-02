@@ -1,0 +1,18 @@
+{
+  "name": "chiu20060726.github.io",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "astro": "^5.15.8",
+    "three": "^0.184.0"
+  }
+}
